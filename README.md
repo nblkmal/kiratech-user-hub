@@ -34,7 +34,7 @@ A modern Vue 3 web application that displays a list of users with detailed infor
 1. Clone the repository:
 ```bash
 git clone https://github.com/nblkmal/kiratech-user-hub
-cd fe-assignment-bootstrap
+cd kiratech-user-hub
 ```
 
 2. Install dependencies:
