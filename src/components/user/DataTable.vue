@@ -27,15 +27,16 @@ import DataTablePagination from './DataTablePagination.vue';
 import UserInfoDialog from './UserInfoDialog.vue';
 import type { RandomUser } from '@/types';
 import { Button } from '../ui/button';
-import { RefreshCcw } from 'lucide-vue-next';
+import { User, RefreshCcw, Search } from 'lucide-vue-next';
 
 const props = defineProps<{
   columns: ColumnDef<RandomUser, unknown>[];
   data: RandomUser[];
+  usersAmount: number;
 }>();
 
 const emit = defineEmits<{
-  refreshData: [];
+  refreshAmount: [number];
 }>();
 
 const sorting = ref<SortingState>([]);
@@ -93,12 +94,30 @@ function refreshData() {
 <template>
   <div class="w-full flex flex-col space-y-4 mt-4">
     <div class="w-full flex justify-between items-center">
-      <Input
-        class="max-w-sm"
-        placeholder="Filter names..."
-        :model-value="table.getColumn('name')?.getFilterValue() as string"
-        @update:model-value="table.getColumn('name')?.setFilterValue($event)"
-      />
+      <div class="flex space-x-4">
+        <div class="relative w-full max-w-sm items-center">
+          <Input
+            class="pl-10"
+            placeholder="Amount of results..."
+            :model-value="usersAmount"
+            @update:model-value="emit('refreshAmount', $event)"
+          />
+          <span class="absolute start-0 inset-y-0 flex items-center justify-center px-2">
+            <User class="h-4 w-4 text-muted-foreground" />
+          </span>
+        </div>
+        <div class="relative w-full max-w-sm items-center">
+          <Input
+            class="pl-10"
+            placeholder="Filter names..."
+            :model-value="table.getColumn('name')?.getFilterValue() as string"
+            @update:model-value="table.getColumn('name')?.setFilterValue($event)"
+          />
+          <span class="absolute start-0 inset-y-0 flex items-center justify-center px-2">
+            <Search class="h-4 w-4 text-muted-foreground" />
+          </span>
+        </div>
+      </div>
 
       <Button variant="secondary" @click="refreshData">
         <RefreshCcw class="w-4 h-4 mr-2" />

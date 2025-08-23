@@ -9,10 +9,13 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 const users = ref<RandomUser[]>([]);
 const loading = ref(true);
+const usersAmount = ref(20);
 
 const fetchUsers = async () => {
   try {
-    const response = await axios.get('https://randomuser.me/api/?results=20');
+    const response = await axios.get(
+      `https://randomuser.me/api/?results=${usersAmount.value}`,
+    );
     users.value = response.data.results;
   } catch (error) {
     console.error('Error fetching users:', error);
@@ -24,6 +27,11 @@ const fetchUsers = async () => {
 const refetchUsers = () => {
   loading.value = true;
   fetchUsers();
+};
+
+const refreshAmount = (amount: number) => {
+  usersAmount.value = amount;
+  refetchUsers();
 };
 
 onMounted(() => {
@@ -56,6 +64,8 @@ onMounted(() => {
       :columns="columns"
       :data="users"
       @refreshData="refetchUsers"
+      @refreshAmount="refreshAmount"
+      :usersAmount="usersAmount"
     />
   </div>
 </template>
