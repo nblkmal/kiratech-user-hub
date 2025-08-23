@@ -35,21 +35,16 @@ onMounted(() => {
     <!-- User Highlight Component -->
     <UserHighlight :users="users" />
 
-    <!-- Data Table -->
-    <div class="px-0 md:px-6 py-6">
-      <div class="bg-white rounded-lg shadow-sm">
-        <!-- Loading State -->
-        <div v-if="loading" class="p-8 text-center text-gray-500">
-          <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-4"></div>
-          Loading users...
-        </div>
-        <!-- Data Table -->
-        <DataTable
-          v-else
-          :columns="columns"
-          :data="users"
-          @refreshData="refetchUsers" />
-      </div>
+    <!-- Loading State -->
+    <div v-if="loading" class="p-8 text-center text-gray-500">
+      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-4"></div>
+      Loading users...
     </div>
+    <!-- Data Table -->
+    <DataTable
+      v-else
+      :columns="columns"
+      :data="users"
+      @refreshData="refetchUsers" />
   </div>
 </template>

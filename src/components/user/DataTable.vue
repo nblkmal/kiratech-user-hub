@@ -82,51 +82,53 @@ function refreshData() {
 </script>
 
 <template>
-  <div class="w-full flex justify-between items-center space-x-2 py-4">
-    <Input
-      class="max-w-sm"
-      placeholder="Filter names..."
-      :model-value="table.getColumn('name')?.getFilterValue() as string"
-      @update:model-value=" table.getColumn('name')?.setFilterValue($event)"/>
-
-    <Button variant="secondary" @click="refreshData">
-      <RefreshCcw class="w-4 h-4 mr-2" /> Refresh Data
-    </Button>
-  </div>
-  <div class="border rounded-md">
-    <Table>
-      <TableHeader>
-        <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
-          <TableHead v-for="header in headerGroup.headers" :key="header.id">
-            <FlexRender
-              v-if="!header.isPlaceholder" :render="header.column.columnDef.header"
-              :props="header.getContext()"
-            />
-          </TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        <template v-if="table.getRowModel().rows?.length">
-          <TableRow
-            v-for="row in table.getRowModel().rows" :key="row.id"
-            :data-state="row.getIsSelected() ? 'selected' : undefined"
-          >
-            <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
-              <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
-            </TableCell>
+  <div class="w-full flex flex-col space-y-4 mt-4">
+    <div class="w-full flex justify-between items-center">
+      <Input
+        class="max-w-sm"
+        placeholder="Filter names..."
+        :model-value="table.getColumn('name')?.getFilterValue() as string"
+        @update:model-value=" table.getColumn('name')?.setFilterValue($event)"/>
+  
+      <Button variant="secondary" @click="refreshData">
+        <RefreshCcw class="w-4 h-4 mr-2" /> Refresh Data
+      </Button>
+    </div>
+    <div class="border rounded-md">
+      <Table>
+        <TableHeader>
+          <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
+            <TableHead v-for="header in headerGroup.headers" :key="header.id">
+              <FlexRender
+                v-if="!header.isPlaceholder" :render="header.column.columnDef.header"
+                :props="header.getContext()"
+              />
+            </TableHead>
           </TableRow>
-        </template>
-        <template v-else>
-          <TableRow>
-            <TableCell :colspan="columns.length" class="h-24 text-center">
-              No results.
-            </TableCell>
-          </TableRow>
-        </template>
-      </TableBody>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          <template v-if="table.getRowModel().rows?.length">
+            <TableRow
+              v-for="row in table.getRowModel().rows" :key="row.id"
+              :data-state="row.getIsSelected() ? 'selected' : undefined"
+            >
+              <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
+                <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
+              </TableCell>
+            </TableRow>
+          </template>
+          <template v-else>
+            <TableRow>
+              <TableCell :colspan="columns.length" class="h-24 text-center">
+                No results.
+              </TableCell>
+            </TableRow>
+          </template>
+        </TableBody>
+      </Table>
+    </div>
+    <DataTablePagination :table="table" />
   </div>
-  <DataTablePagination :table="table" />
   
   <!-- User Info Dialog -->
   <UserInfoDialog 
