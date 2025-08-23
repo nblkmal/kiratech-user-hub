@@ -45,7 +45,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
     showEmail: false,
-    headTitle: () => 'User Hub',
+    headTitle: () => 'Kiratech',
 });
 </script>
 
@@ -70,7 +70,7 @@ const props = withDefaults(defineProps<Props>(), {
                   <line x1="208" y1="128" x2="128" y2="208" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></line>
                   <line x1="192" y1="40" x2="40" y2="192" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></line>
                 </svg>
-                <span class="font-bold"> User Hub </span>
+                <span class="font-bold"> Kiratech </span>
               </a>
               <nav class="flex items-center gap-4 text-sm xl:gap-6">
                 <!-- <a href="/" class="transition-colors hover:text-foreground/80 text-foreground/80">Home</a> -->
@@ -91,7 +91,7 @@ const props = withDefaults(defineProps<Props>(), {
         </div>
         </header>
 
-        <div class="flex flex-col space-y-4 w-full px-4 md:px-8 lg:px-16 xl:px-40 pt-20">
+        <div class="flex flex-col space-y-4 w-full px-4 md:px-8 lg:px-16 xl:px-10 pt-20">
           <slot />
         </div>
     </div>
