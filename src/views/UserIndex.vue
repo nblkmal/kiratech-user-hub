@@ -5,6 +5,7 @@ import type { RandomUser } from '@/types';
 import { columns } from '@/components/user/column';
 import DataTable from '@/components/user/DataTable.vue';
 import UserHighlight from '@/components/user/UserHighlight.vue';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const users = ref<RandomUser[]>([]);
 const loading = ref(true);
@@ -36,11 +37,18 @@ onMounted(() => {
     <UserHighlight :users="users" />
 
     <!-- Loading State -->
-    <div v-if="loading" class="p-8 text-center text-gray-500">
-      <div
-        class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-4"
-      ></div>
-      Loading users...
+    <div v-if="loading" class="flex flex-col items-center py-4 space-y-4">
+      <div class="flex justify-between items-center w-full">
+        <Skeleton class="h-9 w-[450px]" />
+        <Skeleton class="h-9 w-[150px]" />
+      </div>
+      <div class="flex border rounded-lg p-4 w-full space-x-4">
+        <Skeleton class="h-9 w-full" />
+        <Skeleton class="h-9 w-full" />
+        <Skeleton class="h-9 w-full" />
+        <Skeleton class="h-9 w-full" />
+        <Skeleton class="h-9 w-full" />
+      </div>
     </div>
     <!-- Data Table -->
     <DataTable
