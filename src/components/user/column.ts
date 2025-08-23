@@ -66,7 +66,7 @@ export const columns: ColumnDef<RandomUser>[] = [
         {
           variant: 'ghost',
           onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
-          class: 'text-gray-500 font-medium',
+          class: 'font-medium',
         },
         () => ['Name', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })]
       );
@@ -78,7 +78,7 @@ export const columns: ColumnDef<RandomUser>[] = [
       return h('div', { class: 'flex items-center justify-between' }, [
         h(
           'span',
-          { class: 'font-semibold text-gray-900' },
+          { class: 'font-semibold text-gray-900 group-hover:text-cyan-500' },
           `${name.first} ${name.last}`
         ),
         h(

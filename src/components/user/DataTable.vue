@@ -132,7 +132,7 @@ function handleAmountChange(value: string) {
         Refresh Data
       </Button>
     </div>
-    <div class="border rounded-md">
+    <div class="">
       <Table>
         <TableHeader>
           <TableRow
@@ -154,9 +154,11 @@ function handleAmountChange(value: string) {
               v-for="row in table.getRowModel().rows"
               :key="row.id"
               :data-state="row.getIsSelected() ? 'selected' : undefined"
+              class="hover:border hover:border-cyan-500 hover:bg-cyan-500/10 hover:shadow-md group"
             >
               <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
                 <FlexRender
+                  class="group-hover:text-cyan-500"
                   :render="cell.column.columnDef.cell"
                   :props="cell.getContext()"
                 />
