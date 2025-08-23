@@ -4,6 +4,8 @@ import axios from 'axios'
 import type { RandomUser } from '@/types'
 import { columns } from '@/components/user/column'
 import DataTable from '@/components/user/DataTable.vue'
+import { MailOpen, UserPlus } from 'lucide-vue-next'
+import { Button } from '@/components/ui/button';
 
 const users = ref<RandomUser[]>([])
 const loading = ref(true)
@@ -19,20 +21,25 @@ const fetchUsers = async () => {
   }
 }
 
+const refetchUsers = () => {
+  loading.value = true;
+  fetchUsers();
+}
+
 onMounted(() => {
-  fetchUsers()
-})
+  fetchUsers();
+});
 </script>
 
 <template>
   <div>
     <!-- Profile Banner -->
-    <div class="bg-blue-500 px-6 py-8">
+    <div class="bg-cyan-500 px-6 py-8 rounded-xl">
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-6">
           <!-- Profile Picture -->
           <div class="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
-            <img 
+            <img
               v-if="users.length > 0" 
               :src="users[0].picture.large" 
               :alt="`${users[0].name.first} ${users[0].name.last}`"
@@ -56,18 +63,12 @@ onMounted(() => {
         
         <!-- Action Buttons -->
         <div class="flex space-x-3">
-          <button class="bg-blue-400 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-blue-300 transition-colors">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
-            </svg>
-            <span>Send Message</span>
-          </button>
-          <button class="bg-white text-blue-500 px-4 py-2 rounded-lg flex items-center space-x-2 border border-blue-400 hover:bg-blue-50 transition-colors">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-            </svg>
-            <span>Add Friend</span>
-          </button>
+          <Button variant="outline">
+            <MailOpen class="w-4 h-4 mr-2" /> Send Message
+          </Button>
+          <Button variant="outline">
+            <UserPlus class="w-4 h-4 mr-2" /> Add Friend
+          </Button>
         </div>
       </div>
     </div>
@@ -81,7 +82,11 @@ onMounted(() => {
           Loading users...
         </div>
         <!-- Data Table -->
-        <DataTable v-else :columns="columns" :data="users" />
+        <DataTable
+          v-else
+          :columns="columns"
+          :data="users"
+          @refreshData="refetchUsers" />
       </div>
     </div>
   </div>

@@ -26,16 +26,22 @@ import { Input } from '@/components/ui/input';
 import DataTablePagination from './DataTablePagination.vue';
 import UserInfoDialog from './UserInfoDialog.vue';
 import type { RandomUser } from '@/types';
+import { Button } from '../ui/button';
+import { RefreshCcw } from 'lucide-vue-next';
 
 const props = defineProps<{
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
-}>()
+  columns: ColumnDef<RandomUser, unknown>[];
+  data: RandomUser[];
+}>();
 
-const sorting = ref<SortingState>([])
-const columnFilters = ref<ColumnFiltersState>([])
-const selectedUser = ref<RandomUser | null>(null)
-const isDialogOpen = ref(false)
+const emit = defineEmits<{
+  refreshData: [];
+}>();
+
+const sorting = ref<SortingState>([]);
+const columnFilters = ref<ColumnFiltersState>([]);
+const selectedUser = ref<RandomUser | null>(null);
+const isDialogOpen = ref(false);
 
 const table = useVueTable({
   get data() { return props.data },
@@ -69,13 +75,23 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('showUserDialog', handleShowUserDialog as EventListener)
 })
+
+function refreshData() {
+  emit('refreshData');
+}
 </script>
 
 <template>
-  <div class="flex items-center py-4">
-      <Input class="max-w-sm" placeholder="Filter names..."
-          :model-value="table.getColumn('name')?.getFilterValue() as string"
-          @update:model-value=" table.getColumn('name')?.setFilterValue($event)" />
+  <div class="w-full flex justify-between items-center space-x-2 py-4">
+    <Input
+      class="max-w-sm"
+      placeholder="Filter names..."
+      :model-value="table.getColumn('name')?.getFilterValue() as string"
+      @update:model-value=" table.getColumn('name')?.setFilterValue($event)"/>
+
+    <Button variant="secondary" @click="refreshData">
+      <RefreshCcw class="w-4 h-4 mr-2" /> Refresh Data
+    </Button>
   </div>
   <div class="border rounded-md">
     <Table>

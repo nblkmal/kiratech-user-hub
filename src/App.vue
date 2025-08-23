@@ -4,7 +4,7 @@ import GuestLayout from './components/GuestLayout.vue'
 </script>
 
 <template>
-    <GuestLayout headTitle="My Appointments">
+    <GuestLayout headTitle="Kiratech">
         <RouterView />
     </GuestLayout>
 </template>
