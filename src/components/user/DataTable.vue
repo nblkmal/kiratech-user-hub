@@ -1,7 +1,7 @@
 <script setup lang="ts" generic="TData, TValue">
 import type { ColumnDef, ColumnFiltersState } from '@tanstack/vue-table';
 import { ref } from 'vue';
-import { FlexRender, getCoreRowModel, useVueTable, getFilteredRowModel } from '@tanstack/vue-table';
+import { FlexRender, getCoreRowModel, useVueTable, getFilteredRowModel, getPaginationRowModel } from '@tanstack/vue-table';
 import { valueUpdater } from '@/lib/utils';
 import {
   Table,
@@ -12,6 +12,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Input } from '@/components/ui/input';
+import DataTablePagination from './DataTablePagination.vue';
 
 const props = defineProps<{
   columns: ColumnDef<TData, TValue>[]
@@ -25,6 +26,7 @@ const table = useVueTable({
   getCoreRowModel: getCoreRowModel(),
   getFilteredRowModel: getFilteredRowModel(),
   onColumnFiltersChange: updaterOrValue => valueUpdater(updaterOrValue, columnFilters),
+  getPaginationRowModel: getPaginationRowModel(),
   state: {
     get columnFilters() { return columnFilters.value },
   },
@@ -70,4 +72,5 @@ const table = useVueTable({
       </TableBody>
     </Table>
   </div>
+  <DataTablePagination :table="table" />
 </template>
