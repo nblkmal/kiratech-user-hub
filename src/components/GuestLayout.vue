@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SettingsIcon, BellIcon, LogOutIcon } from 'lucide-vue-next';
+import { SettingsIcon, BellIcon, LogOutIcon, CodeIcon, GithubIcon } from 'lucide-vue-next';
 </script>
 
 <template>
@@ -45,14 +45,16 @@ import { SettingsIcon, BellIcon, LogOutIcon } from 'lucide-vue-next';
 
   <!-- Footer -->
   <footer
-    class="border-grid border-t py-6 px-4 md:px-8 lg:px-16 xl:px-24 md:py-0 mt-6"
+    class="border-grid border-t mt-4"
   >
     <div class="container-wrapper">
       <div class="container py-4">
         <p
-          class="text-balance text-center text-sm leading-loose text-muted-foreground md:text-left"
+          class="text-balance text-center text-sm leading-loose text-muted-foreground md:text-left flex items-center justify-center space-x-2"
         >
-          <span>Built by Nabil Akmal</span>
+        <CodeIcon class="w-4 h-4" />
+        <span class="font-mono text-xs font-bold">Code by Nabil Akmal | Inspired by Kiratech |</span>
+        <a href="https://github.com/nblkmal/kiratech-user-hub" class="text-blue-500 font-mono text-xs font-bold space-x-2 flex items-center justify-center"><GithubIcon class="w-4 h-4" />Github Repository</a>
         </p>
       </div>
     </div>
