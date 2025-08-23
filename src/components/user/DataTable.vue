@@ -4,7 +4,7 @@ import type {
   ColumnFiltersState,
   SortingState,
 } from '@tanstack/vue-table';
-import { ref } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import {
   FlexRender,
   useVueTable,
@@ -24,6 +24,8 @@ import {
 } from '@/components/ui/table';
 import { Input } from '@/components/ui/input';
 import DataTablePagination from './DataTablePagination.vue';
+import UserInfoDialog from './UserInfoDialog.vue';
+import type { RandomUser } from '@/types';
 
 const props = defineProps<{
   columns: ColumnDef<TData, TValue>[]
@@ -32,6 +34,9 @@ const props = defineProps<{
 
 const sorting = ref<SortingState>([])
 const columnFilters = ref<ColumnFiltersState>([])
+const selectedUser = ref<RandomUser | null>(null)
+const isDialogOpen = ref(false)
+
 const table = useVueTable({
   get data() { return props.data },
   get columns() { return props.columns },
@@ -45,6 +50,24 @@ const table = useVueTable({
     get sorting() { return sorting.value },
     get columnFilters() { return columnFilters.value },
   },
+})
+
+const handleShowUserDialog = (event: CustomEvent) => {
+  selectedUser.value = event.detail.user
+  isDialogOpen.value = true
+}
+
+const closeDialog = () => {
+  isDialogOpen.value = false
+  selectedUser.value = null
+}
+
+onMounted(() => {
+  window.addEventListener('showUserDialog', handleShowUserDialog as EventListener)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('showUserDialog', handleShowUserDialog as EventListener)
 })
 </script>
 
@@ -88,4 +111,11 @@ const table = useVueTable({
     </Table>
   </div>
   <DataTablePagination :table="table" />
+  
+  <!-- User Info Dialog -->
+  <UserInfoDialog 
+    :user="selectedUser" 
+    :is-open="isDialogOpen" 
+    @close="closeDialog" 
+  />
 </template>

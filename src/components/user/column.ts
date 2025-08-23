@@ -2,7 +2,7 @@ import type { ColumnDef } from '@tanstack/vue-table'
 import { h } from 'vue'
 import type { RandomUser } from '@/types'
 import { Button } from '../ui/button'
-import { ArrowUpDown, ChevronDown } from 'lucide-vue-next'
+import { ArrowUpDown, ChevronDown, Eye } from 'lucide-vue-next'
 
 export const columns: ColumnDef<RandomUser>[] = [
   {
@@ -65,7 +65,22 @@ export const columns: ColumnDef<RandomUser>[] = [
     },
     cell: ({ row }) => {
       const name = row.getValue('name') as { first: string; last: string }
-      return h('div', { class: 'font-semibold text-gray-900' }, `${name.first} ${name.last}`)
+      const user = row.original
+      
+      return h('div', { class: 'flex items-center justify-between' }, [
+        h('span', { class: 'font-semibold text-gray-900' }, `${name.first} ${name.last}`),
+        h(Button, {
+          variant: 'ghost',
+          size: 'sm',
+          class: 'h-6 w-6 p-0 hover:bg-gray-100',
+          onClick: () => {
+            // This will be handled by the parent component
+            window.dispatchEvent(new CustomEvent('showUserDialog', { 
+              detail: { user } 
+            }))
+          }
+        }, () => h(Eye, { class: 'h-3 w-3 text-gray-500' }))
+      ])
     },
     enableColumnFilter: true,
     filterFn: (row, id, value) => {

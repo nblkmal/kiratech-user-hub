@@ -4,6 +4,13 @@ import type { RandomUser } from '@/types'
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-vue-next'
 
 import { Button } from '@/components/ui/button'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
 interface DataTablePaginationProps {
   table: Table<RandomUser>
@@ -22,15 +29,19 @@ defineProps<DataTablePaginationProps>()
         <p class="text-sm font-medium">
           Rows per page
         </p>
-        <select
-          :value="table.getState().pagination.pageSize"
-          @change="table.setPageSize(Number($event.target.value))"
-          class="h-8 w-[70px] rounded-md border border-input bg-transparent px-2 text-sm"
+        <Select
+          :model-value="`${table.getState().pagination.pageSize}`"
+          @update:model-value="table.setPageSize(Number($event))"
         >
-          <option v-for="pageSize in [10, 20, 30, 40, 50]" :key="pageSize" :value="pageSize">
-            {{ pageSize }}
-          </option>
-        </select>
+          <SelectTrigger class="h-8 w-[70px]">
+            <SelectValue :placeholder="`${table.getState().pagination.pageSize}`" />
+          </SelectTrigger>
+          <SelectContent side="top">
+            <SelectItem v-for="pageSize in [10, 20, 30, 40, 50]" :key="pageSize" :value="`${pageSize}`">
+              {{ pageSize }}
+            </SelectItem>
+          </SelectContent>
+        </Select>
       </div>
       <div class="flex w-[100px] items-center justify-center text-sm font-medium">
         Page {{ table.getState().pagination.pageIndex + 1 }} of

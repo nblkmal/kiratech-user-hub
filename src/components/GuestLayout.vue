@@ -91,7 +91,7 @@ const props = withDefaults(defineProps<Props>(), {
         </div>
         </header>
 
-        <div class="flex flex-col space-y-4 w-full px-4 md:px-8 lg:px-16 xl:px-10 pt-20">
+        <div class="flex flex-col space-y-4 w-full px-4 md:px-8 lg:px-16 xl:px-10">
           <slot />
         </div>
     </div>
