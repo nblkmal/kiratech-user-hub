@@ -1,11 +1,8 @@
 <script setup lang="ts" generic="TData, TValue">
-import type { ColumnDef } from '@tanstack/vue-table'
-import {
-  FlexRender,
-  getCoreRowModel,
-  useVueTable,
-} from '@tanstack/vue-table'
-
+import type { ColumnDef, ColumnFiltersState } from '@tanstack/vue-table';
+import { ref } from 'vue';
+import { FlexRender, getCoreRowModel, useVueTable, getFilteredRowModel } from '@tanstack/vue-table';
+import { valueUpdater } from '@/lib/utils';
 import {
   Table,
   TableBody,
@@ -13,21 +10,33 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
+} from '@/components/ui/table';
+import { Input } from '@/components/ui/input';
 
 const props = defineProps<{
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
 }>()
 
+const columnFilters = ref<ColumnFiltersState>([])
 const table = useVueTable({
   get data() { return props.data },
   get columns() { return props.columns },
   getCoreRowModel: getCoreRowModel(),
+  getFilteredRowModel: getFilteredRowModel(),
+  onColumnFiltersChange: updaterOrValue => valueUpdater(updaterOrValue, columnFilters),
+  state: {
+    get columnFilters() { return columnFilters.value },
+  },
 })
 </script>
 
 <template>
+  <div class="flex items-center py-4">
+      <Input class="max-w-sm" placeholder="Filter names..."
+          :model-value="table.getColumn('name')?.getFilterValue() as string"
+          @update:model-value=" table.getColumn('name')?.setFilterValue($event)" />
+  </div>
   <div class="border rounded-md">
     <Table>
       <TableHeader>

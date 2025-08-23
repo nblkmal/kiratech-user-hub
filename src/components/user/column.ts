@@ -8,13 +8,25 @@ export const columns: ColumnDef<RandomUser>[] = [
     header: () => h('div', { class: 'text-gray-500 font-medium' }, 'Date'),
     cell: ({ row }) => {
       const registered = row.getValue('registered') as { date: string }
-      const date = new Date(registered.date)
-      const formatted = date.toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric'
-      })
-      return h('div', { class: 'text-gray-600' }, formatted)
+      if (!registered?.date) {
+        return h('div', { class: 'text-gray-600' }, 'N/A')
+      }
+      
+      try {
+        const date = new Date(registered.date)
+        if (isNaN(date.getTime())) {
+          return h('div', { class: 'text-gray-600' }, 'Invalid Date')
+        }
+        
+        const formatted = date.toLocaleDateString('en-GB', {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric'
+        })
+        return h('div', { class: 'text-gray-600' }, formatted)
+      } catch (error) {
+        return h('div', { class: 'text-gray-600' }, 'Error')
+      }
     },
   },
   {
@@ -23,6 +35,12 @@ export const columns: ColumnDef<RandomUser>[] = [
     cell: ({ row }) => {
       const name = row.getValue('name') as { first: string; last: string }
       return h('div', { class: 'font-semibold text-gray-900' }, `${name.first} ${name.last}`)
+    },
+    enableColumnFilter: true,
+    filterFn: (row, id, value) => {
+      const name = row.getValue(id) as { first: string; last: string }
+      const fullName = `${name.first} ${name.last}`.toLowerCase()
+      return fullName.includes(value.toLowerCase())
     },
   },
   {
