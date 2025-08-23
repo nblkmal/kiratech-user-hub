@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type Table } from '@tanstack/vue-table';
+import type { Table } from '@tanstack/vue-table';
 import type { RandomUser } from '@/types';
 import {
   ChevronLeft,
