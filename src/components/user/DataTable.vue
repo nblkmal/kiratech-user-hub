@@ -37,6 +37,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   refreshAmount: [number];
+  refreshData: [];
 }>();
 
 const sorting = ref<SortingState>([]);
@@ -89,6 +90,13 @@ onUnmounted(() => {
 function refreshData() {
   emit('refreshData');
 }
+
+function handleAmountChange(value: string) {
+  const numValue = Number(value);
+  if (!isNaN(numValue) && numValue > 0) {
+    emit('refreshAmount', numValue);
+  }
+}
 </script>
 
 <template>
@@ -100,7 +108,7 @@ function refreshData() {
             class="pl-10"
             placeholder="Amount of results..."
             :model-value="usersAmount"
-            @update:model-value="emit('refreshAmount', $event)"
+            @update:model-value="handleAmountChange"
           />
           <span class="absolute start-0 inset-y-0 flex items-center justify-center px-2">
             <User class="h-4 w-4 text-muted-foreground" />
