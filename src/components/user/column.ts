@@ -1,11 +1,19 @@
 import type { ColumnDef } from '@tanstack/vue-table'
 import { h } from 'vue'
 import type { RandomUser } from '@/types'
+import { Button } from '../ui/button'
+import { ArrowUpDown, ChevronDown } from 'lucide-vue-next'
 
 export const columns: ColumnDef<RandomUser>[] = [
   {
     accessorKey: 'registered',
-    header: () => h('div', { class: 'text-gray-500 font-medium' }, 'Date'),
+    header: ({ column }) => {
+      return h(Button, {
+        variant: 'ghost',
+        onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
+        class: 'text-gray-500 font-medium'
+      }, () => ['Date', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })])
+    },
     cell: ({ row }) => {
       const registered = row.getValue('registered') as { date: string }
       if (!registered?.date) {
@@ -28,10 +36,33 @@ export const columns: ColumnDef<RandomUser>[] = [
         return h('div', { class: 'text-gray-600' }, 'Error')
       }
     },
+    sortingFn: (rowA, rowB) => {
+      const dateA = rowA.getValue('registered') as { date: string }
+      const dateB = rowB.getValue('registered') as { date: string }
+      
+      if (!dateA?.date || !dateB?.date) return 0
+      
+      try {
+        const timeA = new Date(dateA.date).getTime()
+        const timeB = new Date(dateB.date).getTime()
+        
+        if (isNaN(timeA) || isNaN(timeB)) return 0
+        
+        return timeA - timeB
+      } catch (error) {
+        return 0
+      }
+    },
   },
   {
     accessorKey: 'name',
-    header: () => h('div', { class: 'text-gray-500 font-medium' }, 'Name'),
+    header: ({ column }) => {
+      return h(Button, {
+        variant: 'ghost',
+        onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
+        class: 'text-gray-500 font-medium'
+      }, () => ['Name', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })])
+    },
     cell: ({ row }) => {
       const name = row.getValue('name') as { first: string; last: string }
       return h('div', { class: 'font-semibold text-gray-900' }, `${name.first} ${name.last}`)
