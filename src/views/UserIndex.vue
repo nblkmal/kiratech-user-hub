@@ -16,9 +16,16 @@ const fetchUsers = async () => {
     const response = await axios.get(
       `https://randomuser.me/api/?results=${usersAmount.value}`,
     );
-    users.value = response.data.results;
+    if (response?.data?.results) {
+      users.value = response.data.results;
+    } else {
+      console.warn('Invalid response format from API');
+      users.value = [];
+    }
   } catch (error) {
     console.error('Error fetching users:', error);
+    // Set empty array to prevent undefined errors
+    users.value = [];
   } finally {
     loading.value = false;
   }

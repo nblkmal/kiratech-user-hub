@@ -8,30 +8,26 @@
 // commands please read more here:
 // https://on.cypress.io/custom-commands
 // ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-//
-// declare global {
-//   namespace Cypress {
-//     interface Chainable {
-//       login(email: string, password: string): Chainable<void>
-//       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       visit(originalFn: CommandOriginalFn, url: string, options: Partial<VisitOptions>): Chainable<Element>
-//     }
-//   }
-// }
+
+// Custom command to wait for page to be ready
+Cypress.Commands.add('waitForPageLoad', () => {
+  cy.get('body').should('be.visible');
+  // Wait for any loading states to complete
+  cy.get('.animate-pulse').should('not.exist');
+});
+
+// Custom command to mock API responses
+Cypress.Commands.add('mockUserAPI', (response) => {
+  cy.intercept('GET', 'https://randomuser.me/api/*', {
+    statusCode: 200,
+    body: response
+  }).as('getUsers');
+});
+
+// Custom command to mock API errors
+Cypress.Commands.add('mockUserAPIError', (statusCode = 500) => {
+  cy.intercept('GET', 'https://randomuser.me/api/*', {
+    statusCode,
+    body: { error: 'API Error' }
+  }).as('getUsersError');
+});
