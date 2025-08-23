@@ -1,21 +1,26 @@
 <script setup lang="ts">
-import { type Table } from '@tanstack/vue-table'
-import type { RandomUser } from '@/types'
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-vue-next'
+import { type Table } from '@tanstack/vue-table';
+import type { RandomUser } from '@/types';
+import {
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+} from 'lucide-vue-next';
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/button';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
+} from '@/components/ui/select';
 
 interface DataTablePaginationProps {
-  table: Table<RandomUser>
+  table: Table<RandomUser>;
 }
-defineProps<DataTablePaginationProps>()
+defineProps<DataTablePaginationProps>();
 </script>
 
 <template>
@@ -26,24 +31,30 @@ defineProps<DataTablePaginationProps>()
     </div>
     <div class="flex items-center space-x-6 lg:space-x-8">
       <div class="flex items-center space-x-2">
-        <p class="text-sm font-medium">
-          Rows per page
-        </p>
+        <p class="text-sm font-medium">Rows per page</p>
         <Select
           :model-value="`${table.getState().pagination.pageSize}`"
           @update:model-value="table.setPageSize(Number($event))"
         >
           <SelectTrigger class="h-8 w-[70px]">
-            <SelectValue :placeholder="`${table.getState().pagination.pageSize}`" />
+            <SelectValue
+              :placeholder="`${table.getState().pagination.pageSize}`"
+            />
           </SelectTrigger>
           <SelectContent side="top">
-            <SelectItem v-for="pageSize in [10, 20, 30, 40, 50]" :key="pageSize" :value="`${pageSize}`">
+            <SelectItem
+              v-for="pageSize in [10, 20, 30, 40, 50]"
+              :key="pageSize"
+              :value="`${pageSize}`"
+            >
               {{ pageSize }}
             </SelectItem>
           </SelectContent>
         </Select>
       </div>
-      <div class="flex w-[100px] items-center justify-center text-sm font-medium">
+      <div
+        class="flex w-[100px] items-center justify-center text-sm font-medium"
+      >
         Page {{ table.getState().pagination.pageIndex + 1 }} of
         {{ table.getPageCount() }}
       </div>

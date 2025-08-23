@@ -44,37 +44,46 @@ const selectedUser = ref<RandomUser | null>(null);
 const isDialogOpen = ref(false);
 
 const table = useVueTable({
-  get data() { return props.data },
-  get columns() { return props.columns },
+  get data() {
+    return props.data;
+  },
+  get columns() {
+    return props.columns;
+  },
   getCoreRowModel: getCoreRowModel(),
   getFilteredRowModel: getFilteredRowModel(),
-  onColumnFiltersChange: updaterOrValue => valueUpdater(updaterOrValue, columnFilters),
+  onColumnFiltersChange: (updaterOrValue) =>
+    valueUpdater(updaterOrValue, columnFilters),
   getPaginationRowModel: getPaginationRowModel(),
   getSortedRowModel: getSortedRowModel(),
-  onSortingChange: updaterOrValue => valueUpdater(updaterOrValue, sorting),
+  onSortingChange: (updaterOrValue) => valueUpdater(updaterOrValue, sorting),
   state: {
-    get sorting() { return sorting.value },
-    get columnFilters() { return columnFilters.value },
+    get sorting() {
+      return sorting.value;
+    },
+    get columnFilters() {
+      return columnFilters.value;
+    },
   },
-})
+});
 
 const handleShowUserDialog = (event: CustomEvent) => {
-  selectedUser.value = event.detail.user
-  isDialogOpen.value = true
-}
+  selectedUser.value = event.detail.user;
+  isDialogOpen.value = true;
+};
 
 const closeDialog = () => {
-  isDialogOpen.value = false
-  selectedUser.value = null
-}
+  isDialogOpen.value = false;
+  selectedUser.value = null;
+};
 
 onMounted(() => {
-  window.addEventListener('showUserDialog', handleShowUserDialog as EventListener)
-})
+  window.addEventListener('showUserDialog', handleShowUserDialog as any);
+});
 
 onUnmounted(() => {
-  window.removeEventListener('showUserDialog', handleShowUserDialog as EventListener)
-})
+  window.removeEventListener('showUserDialog', handleShowUserDialog as any);
+});
 
 function refreshData() {
   emit('refreshData');
@@ -88,19 +97,25 @@ function refreshData() {
         class="max-w-sm"
         placeholder="Filter names..."
         :model-value="table.getColumn('name')?.getFilterValue() as string"
-        @update:model-value=" table.getColumn('name')?.setFilterValue($event)"/>
-  
+        @update:model-value="table.getColumn('name')?.setFilterValue($event)"
+      />
+
       <Button variant="secondary" @click="refreshData">
-        <RefreshCcw class="w-4 h-4 mr-2" /> Refresh Data
+        <RefreshCcw class="w-4 h-4 mr-2" />
+        Refresh Data
       </Button>
     </div>
     <div class="border rounded-md">
       <Table>
         <TableHeader>
-          <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
+          <TableRow
+            v-for="headerGroup in table.getHeaderGroups()"
+            :key="headerGroup.id"
+          >
             <TableHead v-for="header in headerGroup.headers" :key="header.id">
               <FlexRender
-                v-if="!header.isPlaceholder" :render="header.column.columnDef.header"
+                v-if="!header.isPlaceholder"
+                :render="header.column.columnDef.header"
                 :props="header.getContext()"
               />
             </TableHead>
@@ -109,11 +124,15 @@ function refreshData() {
         <TableBody>
           <template v-if="table.getRowModel().rows?.length">
             <TableRow
-              v-for="row in table.getRowModel().rows" :key="row.id"
+              v-for="row in table.getRowModel().rows"
+              :key="row.id"
               :data-state="row.getIsSelected() ? 'selected' : undefined"
             >
               <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
-                <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
+                <FlexRender
+                  :render="cell.column.columnDef.cell"
+                  :props="cell.getContext()"
+                />
               </TableCell>
             </TableRow>
           </template>
@@ -129,11 +148,11 @@ function refreshData() {
     </div>
     <DataTablePagination :table="table" />
   </div>
-  
+
   <!-- User Info Dialog -->
-  <UserInfoDialog 
-    :user="selectedUser" 
-    :is-open="isDialogOpen" 
-    @close="closeDialog" 
+  <UserInfoDialog
+    :user="selectedUser"
+    :is-open="isDialogOpen"
+    @close="closeDialog"
   />
 </template>
