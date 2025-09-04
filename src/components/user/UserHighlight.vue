@@ -4,7 +4,7 @@ import { MailOpen, UserPlus } from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
 
 interface Props {
-  users: RandomUser[];
+  user: RandomUser;
 }
 
 defineProps<Props>();
@@ -18,9 +18,9 @@ defineProps<Props>();
       <!-- Profile Picture -->
       <div class="w-full md:w-20 h-20 rounded-full overflow-hidden bg-gray-200">
         <img
-          v-if="users.length > 0"
-          :src="users[0].picture.large"
-          :alt="`${users[0].name.first} ${users[0].name.last}`"
+          v-if="user"
+          :src="user.picture.large"
+          :alt="`${user.name.first} ${user.name.last}`"
           class="w-full h-full object-cover"
         />
         <div
@@ -44,11 +44,7 @@ defineProps<Props>();
       <!-- User Info -->
       <div class="text-white">
         <h1 class="text-2xl font-bold">
-          {{
-            users.length > 0
-              ? `${users[0].name.first} ${users[0].name.last}`
-              : 'John Doe'
-          }}
+          {{ user ? `${user.name.first} ${user.name.last}` : 'John Doe' }}
         </h1>
         <p class="text-blue-100">Last online: 2 days ago</p>
       </div>

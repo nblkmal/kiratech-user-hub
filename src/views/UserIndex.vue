@@ -49,7 +49,7 @@ onMounted(() => {
 <template>
   <div>
     <!-- User Highlight Component -->
-    <UserHighlight :users="users" />
+    <UserHighlight :user="users[0]" />
 
     <!-- Loading State -->
     <div v-if="loading" class="flex flex-col items-center py-4 space-y-4">
