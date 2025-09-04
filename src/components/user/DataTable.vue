@@ -14,6 +14,7 @@ import {
   getPaginationRowModel,
 } from '@tanstack/vue-table';
 import { valueUpdater } from '@/lib/utils';
+import { useDebounceFn } from '@vueuse/core';
 import {
   Table,
   TableBody,
@@ -93,11 +94,15 @@ function refreshData() {
   emit('refreshData');
 }
 
-function handleAmountChange(value: string | number) {
+const debouncedAmountChange = useDebounceFn((value: string | number) => {
   const numValue = Number(value);
   if (!isNaN(numValue) && numValue > 0) {
     emit('refreshAmount', numValue);
   }
+}, 500);
+
+function handleAmountChange(value: string | number) {
+  debouncedAmountChange(value);
 }
 </script>
 
