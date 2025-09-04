@@ -20,35 +20,35 @@ import './commands';
 // require('./commands')
 
 // Handle uncaught exceptions globally
-Cypress.on('uncaught:exception', (err, runnable) => {
+Cypress.on('uncaught:exception', (err) => {
   // Returning false here prevents Cypress from failing the test
   // on uncaught exceptions
-  
+
   // Log the error for debugging
   console.log('Cypress caught uncaught exception:', err.message);
-  
+
   // Handle Vue hydration and other common errors
   const suppressErrors = [
     'Cannot read property',
-    'Cannot read properties', 
+    'Cannot read properties',
     'data of undefined',
     'API Error',
     'Network Error',
     'Failed to fetch',
     '__VUE_PROD_HYDRATION_MISMATCH_DETAILS__',
     'hydration mismatch',
-    'ReferenceError'
+    'ReferenceError',
   ];
-  
-  const shouldSuppress = suppressErrors.some(errorType => 
-    err.message && err.message.indexOf(errorType) !== -1
+
+  const shouldSuppress = suppressErrors.some(
+    (errorType) => err.message && err.message.indexOf(errorType) !== -1
   );
-  
+
   if (shouldSuppress) {
     console.log('Suppressing known error:', err.message);
     return false;
   }
-  
+
   // For other errors, let Cypress handle them normally
   return true;
 });
@@ -56,16 +56,17 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 // Handle unhandled promise rejections
 Cypress.on('unhandled:rejection', (event) => {
   console.log('Cypress caught unhandled promise rejection:', event.reason);
-  
+
   // Suppress network-related promise rejections
-  if (event.reason && (
-    event.reason.message?.includes('Network Error') ||
-    event.reason.message?.includes('Failed to fetch') ||
-    event.reason.message?.includes('API Error')
-  )) {
+  if (
+    event.reason &&
+    (event.reason.message?.includes('Network Error') ||
+      event.reason.message?.includes('Failed to fetch') ||
+      event.reason.message?.includes('API Error'))
+  ) {
     console.log('Suppressing network error:', event.reason.message);
     return false;
   }
-  
+
   return true;
 });

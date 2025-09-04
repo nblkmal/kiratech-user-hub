@@ -46,7 +46,7 @@ describe('UserIndex', () => {
     const wrapper = mount(UserIndex);
 
     // Wait for async operations to complete
-    await new Promise(resolve => setTimeout(resolve, 0));
+    await new Promise((resolve) => setTimeout(resolve, 0));
     await wrapper.vm.$nextTick();
 
     // Check if loading is hidden and data is displayed
@@ -61,7 +61,7 @@ describe('UserIndex', () => {
     const wrapper = mount(UserIndex);
 
     // Wait for async operations to complete
-    await new Promise(resolve => setTimeout(resolve, 0));
+    await new Promise((resolve) => setTimeout(resolve, 0));
     await wrapper.vm.$nextTick();
 
     // Should still show loading skeleton or handle error appropriately

@@ -20,7 +20,7 @@ Cypress.Commands.add('waitForPageLoad', () => {
 Cypress.Commands.add('mockUserAPI', (response) => {
   cy.intercept('GET', 'https://randomuser.me/api/*', {
     statusCode: 200,
-    body: response
+    body: response,
   }).as('getUsers');
 });
 
@@ -28,6 +28,6 @@ Cypress.Commands.add('mockUserAPI', (response) => {
 Cypress.Commands.add('mockUserAPIError', (statusCode = 500) => {
   cy.intercept('GET', 'https://randomuser.me/api/*', {
     statusCode,
-    body: { error: 'API Error' }
+    body: { error: 'API Error' },
   }).as('getUsersError');
 });

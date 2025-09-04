@@ -14,7 +14,7 @@ const usersAmount = ref(20);
 const fetchUsers = async () => {
   try {
     const response = await axios.get(
-      `https://randomuser.me/api/?results=${usersAmount.value}`,
+      `https://randomuser.me/api/?results=${usersAmount.value}`
     );
     if (response?.data?.results) {
       users.value = response.data.results;

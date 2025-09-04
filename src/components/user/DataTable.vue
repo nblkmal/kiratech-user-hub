@@ -80,10 +80,12 @@ const closeDialog = () => {
 };
 
 onMounted(() => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   window.addEventListener('showUserDialog', handleShowUserDialog as any);
 });
 
 onUnmounted(() => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   window.removeEventListener('showUserDialog', handleShowUserDialog as any);
 });
 
@@ -91,7 +93,7 @@ function refreshData() {
   emit('refreshData');
 }
 
-function handleAmountChange(value: string) {
+function handleAmountChange(value: string | number) {
   const numValue = Number(value);
   if (!isNaN(numValue) && numValue > 0) {
     emit('refreshAmount', numValue);
@@ -107,10 +109,12 @@ function handleAmountChange(value: string) {
           <Input
             class="pl-10"
             placeholder="Amount of results..."
-            :model-value="usersAmount"
+            :model-value="String(usersAmount)"
             @update:model-value="handleAmountChange"
           />
-          <span class="absolute start-0 inset-y-0 flex items-center justify-center px-2">
+          <span
+            class="absolute start-0 inset-y-0 flex items-center justify-center px-2"
+          >
             <User class="h-4 w-4 text-muted-foreground" />
           </span>
         </div>
@@ -119,9 +123,13 @@ function handleAmountChange(value: string) {
             class="pl-10"
             placeholder="Filter names..."
             :model-value="table.getColumn('name')?.getFilterValue() as string"
-            @update:model-value="table.getColumn('name')?.setFilterValue($event)"
+            @update:model-value="
+              table.getColumn('name')?.setFilterValue($event)
+            "
           />
-          <span class="absolute start-0 inset-y-0 flex items-center justify-center px-2">
+          <span
+            class="absolute start-0 inset-y-0 flex items-center justify-center px-2"
+          >
             <Search class="h-4 w-4 text-muted-foreground" />
           </span>
         </div>

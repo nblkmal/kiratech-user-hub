@@ -11,6 +11,7 @@ import {
 import { cn } from '@/lib/utils';
 import { SelectScrollDownButton, SelectScrollUpButton } from '.';
 
+// eslint-disable-next-line no-undef
 defineOptions({
   inheritAttrs: false,
 });
